@@ -1,0 +1,60 @@
+﻿@model MeuProjeto.Models.TUsers
+
+@using (Html.BeginForm("Cadastrar", "Usuarios", FormMethod.Post, new { @class = "form-register" }))
+{
+
+    <div class="row" style="margin-top: 45px;">
+        <div class="col-md-12">
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary btn-success btn-lg">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+            </div>
+            <div class="col-md-1">
+                <a class="btn btn-warning btn-lg" href="@Url.Action("Cancelar", "Usuarios")">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover min" style="margin-top: 10px;">         
+                <tr>
+                    <th>Username</th>
+                    <td>@Html.TextBoxFor(x => x.UserName, new { style = "width:400px;" })</td>
+                </tr>
+                <tr>
+                    <th>Fullname</th>
+                    <td>@Html.TextAreaFor(x => x.FullName, new { style = "width:400px;" })</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>@Html.TextBoxFor(x => x.Date, new { style = "width:400px;" })</td>
+                </tr>
+                <tr>
+                    <th>Active</th>
+                    <td>@Html.CheckBoxFor(x => x.Active)</td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>@Html.TextBoxFor(x => x.Country, new { style = "width:400px;" })</td>
+                </tr>
+                <tr>
+                    <th>Role</th>
+                    <td>@Html.DropDownList("Role")</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+}
+@if (TempData["Alerta"] != null)
+{
+<script type="text/javascript">
+    $(function () {
+        alert("@TempData["Alerta"]");
+    });
+</script>
+}

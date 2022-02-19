@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<MeuProjeto.Models.TUsers>
+
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-12">
+        <div class="col-md-1 text-left">
+            <a class="btn btn-success btn-lg" href="@Url.Action("Cadastrar", "Usuarios")">
+                <i class="fa-solid fa-folder-plus"></i>
+            </a>
+        </div>
+        <div class="col-md-9 text-right">
+            <div class="form-group">
+                <div class="input-group">
+                    @Html.TextBox("Username", "", new { placeholder = "Username" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-action btn-buscar btn-xs" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 text-right">
+            <div class="form-group">
+                @Html.DropDownList("Role", "Escolha a profissão")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            @Html.Partial("_Busca", Model)
+        </div>
+    </div>
+</div>
+
+@if (TempData["Alerta"] != null)
+{
+    <script type="text/javascript">
+    $(function () {
+        alert("@TempData["Alerta"]");
+    });
+    </script>
+}
+
+<script type="text/javascript">
+
+    var ajaxRequest = null;
+
+    function Buscar()
+    {
+        if (ajaxRequest != null)
+        {
+            ajaxRequest.abort();
+            ajaxRequest = null;
+        }
+
+        var username = $("#Username").val();
+        var role = $("#Role").val();
+        $('table.table-bordered tbody').html("<tr><td class='text-center' colspan='15'><img src='~/Content/images/loading.gif' alt='loading' style='margin: 15px auto;'/></td></tr>");
+        ajaxRequest = $.get("@Url.Action("Buscar", "Usuarios")", { username: username, role: role }, function (data) {
+            $("div.table-responsive").html(data);
+        });
+    }
+
+    $(function () {
+        $("button.btn-buscar").click(function () {
+            Buscar();
+        });
+
+        $("#Role").change(function () {
+            Buscar();
+        });
+    });
+
+</script>
+

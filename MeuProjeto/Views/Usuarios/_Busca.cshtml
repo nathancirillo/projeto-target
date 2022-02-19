@@ -1,0 +1,85 @@
+﻿@model PagedList.IPagedList<MeuProjeto.Models.TUsers>
+@using PagedList.Mvc
+@{ var totalRecords = Model.Count<MeuProjeto.Models.TUsers>();}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover min">
+            <tr>
+                <th>
+                    @Html.DisplayName("ID")
+                </th>
+                <th>
+                    @Html.DisplayName("Username")
+                </th>
+                <th>
+                    @Html.DisplayName("Fullname")
+                </th>
+                <th>
+                    @Html.DisplayName("Date")
+                </th>
+                <th>
+                    @Html.DisplayName("Role")
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+            @if (totalRecords > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @{ var date = item.Date.Value.Date.ToString("dd/MM/yyyy");}
+                            @Html.DisplayFor(modelItem => date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Editar", "Usuarios", new { userID = item.Id })" class="btn btn-warning btn-primary btn-xs"
+                               data-toggle="tooltip" title="Editar">
+                                <i class="fa-solid fa-user-pen"></i> 
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Excluir", "Usuarios", new { userID = item.Id })" class="btn btn-danger btn-primary btn-xs"
+                               data-toggle="tooltip" title="Excluir">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">
+                        <strong>Nenhum usuário encontrado...</strong>
+                    </td>
+                </tr>
+            }
+        </table>
+        <br /> 
+        <div class="text-center">   
+            @if(Model.PageCount > 0)
+            { 
+                @(string.Format("Página {0} de {1}", Model.PageNumber, Model.PageCount)) <br/>
+            }
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page }))           
+        </div>
+    </div>
+</div>
